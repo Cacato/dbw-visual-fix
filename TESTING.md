@@ -1,19 +1,18 @@
-# Test reports
+# Share your test results
 
-Send results directly to **@Matcha on Discord**. Public GitHub issues can also record results for other testers to inspect once the repository is published.
+Post a [test report in Issues](https://github.com/Cacato/dbw-visual-fix/issues/new?template=test-report.md) or share feedback in [Discussions](https://github.com/Cacato/dbw-visual-fix/discussions). You can also message **@Matcha on Discord**.
 
-Copy this form into your report.
+Copy, paste, and fill out this short form. Use Untested for any check you did not perform.
 
-- Race and gender
-- Patched executable SHA256
-- Proc names tested
-- Face, hair, armor, weapons, and animations before, during, and after each proc
-- Stat bonus verified in the character panel
-- Equipment change during a proc
-- Relog during a proc, equipment change after relog, and appearance after expiration
-- Any overlapping transformation or druid form tested
-- Steps to reproduce a problem
+```text
+Race:
+Gender:
+Procs tested (Taunka / Vrykul / Iron Dwarf):
+Normal appearance and animations preserved? Yes / No
+Gear changes during the buff work? Yes / No / Untested
+Relogging with the buff active works? Yes / No / Untested
+Appearance correct after buff expires? Yes / No / Untested
+Notes or problems:
+```
 
-Mark each check passed, failed, or untested. Include screenshots where helpful. Review attachments for account names and personal details before posting publicly.
-
-Existing confirmations in README.md come from Matcha’s tests. No public tester reports have been collected yet.
+If something fails, describe the steps that caused it. Screenshots are optional. Review attachments for personal details before posting publicly.

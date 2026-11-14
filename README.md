@@ -104,7 +104,7 @@ This creates `DbwPatcher.exe` in the repository folder. The patcher can also be 
 
 ## Report a test
 
-Send your test results directly to **@Matcha on Discord**. Include your race, gender, and the proc names you tested. The [test report form](TESTING.md) can also be used for a public GitHub issue in this repository.
+Share a [test report in Issues](https://github.com/Cacato/dbw-visual-fix/issues/new?template=test-report.md), post in [Discussions](https://github.com/Cacato/dbw-visual-fix/discussions), or message **@Matcha on Discord**. Copy and paste the form in [TESTING.md](TESTING.md). Include your race, gender, and the proc names you tested.
 
 Check your face, hair, armor, weapons, and animations before, during, and after the proc. Verify the stat increase in the character panel. Record any crashes or appearance glitches and return to the original executable if a problem occurs.
 
