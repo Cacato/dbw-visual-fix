@@ -5,7 +5,6 @@ Send results directly to **@Matcha on Discord**. Public GitHub issues can also r
 Copy this form into your report.
 
 - Race and gender
-- Realm and client build
 - Patched executable SHA256
 - Proc names tested
 - Face, hair, armor, weapons, and animations before, during, and after each proc
