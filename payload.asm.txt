@@ -1,0 +1,281 @@
+; Exact payload embedded in src/DbwPatcher.cs
+; Runtime virtual address 0x00DFD000. Original image base 0x00400000.
+; First entry preserves the loaded model and reconciles the local display field.
+; Entry 0x00DFD2A8 handles initial loading during an active transformation.
+; Native model selection is limited to the local character and six display IDs.
+
+00DFD000  9c                               pushfd   
+00DFD001  60                               pushal   
+00DFD002  8b ce                            mov      ecx, esi
+00DFD004  e8 35 00 00 00                   call     0xdfd03e
+00DFD009  85 c0                            test     eax, eax
+00DFD00B  0f 85 10 00 00 00                jne      0xdfd021
+00DFD011  61                               popal    
+00DFD012  9d                               popfd    
+00DFD013  8b 50 1c                         mov      edx, dword ptr [eax + 0x1c]
+00DFD016  6a 00                            push     0
+00DFD018  8b ce                            mov      ecx, esi
+00DFD01A  ff d2                            call     edx
+00DFD01C  e9 c7 98 91 ff                   jmp      0x7168e8
+00DFD021  8b 4c 24 04                      mov      ecx, dword ptr [esp + 4]
+00DFD025  8b 89 d0 00 00 00                mov      ecx, dword ptr [ecx + 0xd0]
+00DFD02B  8b 81 f8 00 00 00                mov      eax, dword ptr [ecx + 0xf8]
+00DFD031  89 81 f4 00 00 00                mov      dword ptr [ecx + 0xf4], eax
+00DFD037  61                               popal    
+00DFD038  9d                               popfd    
+00DFD039  e9 aa 98 91 ff                   jmp      0x7168e8
+00DFD03E  51                               push     ecx
+00DFD03F  8b 81 d0 00 00 00                mov      eax, dword ptr [ecx + 0xd0]
+00DFD045  85 c0                            test     eax, eax
+00DFD047  0f 84 40 00 00 00                je       0xdfd08d
+00DFD04D  8b 90 f4 00 00 00                mov      edx, dword ptr [eax + 0xf4]
+00DFD053  e8 39 00 00 00                   call     0xdfd091
+00DFD058  39 e8                            cmp      eax, ebp
+00DFD05A  0f 84 2d 00 00 00                je       0xdfd08d
+00DFD060  8b 0c 24                         mov      ecx, dword ptr [esp]
+00DFD063  83 b9 b4 00 00 00 00             cmp      dword ptr [ecx + 0xb4], 0
+00DFD06A  0f 84 1d 00 00 00                je       0xdfd08d
+00DFD070  8b 91 68 09 00 00                mov      edx, dword ptr [ecx + 0x968]
+00DFD076  85 d2                            test     edx, edx
+00DFD078  0f 84 0f 00 00 00                je       0xdfd08d
+00DFD07E  39 02                            cmp      dword ptr [edx], eax
+00DFD080  0f 85 07 00 00 00                jne      0xdfd08d
+00DFD086  b8 01 00 00 00                   mov      eax, 1
+00DFD08B  59                               pop      ecx
+00DFD08C  c3                               ret      
+00DFD08D  31 c0                            xor      eax, eax
+00DFD08F  59                               pop      ecx
+00DFD090  c3                               ret      
+00DFD091  89 d5                            mov      ebp, edx
+00DFD093  81 fa 5b 5c 00 00                cmp      edx, 0x5c5b
+00DFD099  0f 84 41 00 00 00                je       0xdfd0e0
+00DFD09F  81 fa 65 5c 00 00                cmp      edx, 0x5c65
+00DFD0A5  0f 84 35 00 00 00                je       0xdfd0e0
+00DFD0AB  81 fa 27 79 00 00                cmp      edx, 0x7927
+00DFD0B1  0f 84 33 00 00 00                je       0xdfd0ea
+00DFD0B7  81 fa 64 66 00 00                cmp      edx, 0x6664
+00DFD0BD  0f 84 31 00 00 00                je       0xdfd0f4
+00DFD0C3  81 fa ce 79 00 00                cmp      edx, 0x79ce
+00DFD0C9  0f 84 2f 00 00 00                je       0xdfd0fe
+00DFD0CF  81 fa dd 79 00 00                cmp      edx, 0x79dd
+00DFD0D5  0f 84 23 00 00 00                je       0xdfd0fe
+00DFD0DB  e9 c5 01 00 00                   jmp      0xdfd2a5
+00DFD0E0  bb 00 00 00 00                   mov      ebx, 0
+00DFD0E5  e9 1e 00 00 00                   jmp      0xdfd108
+00DFD0EA  bb 01 00 00 00                   mov      ebx, 1
+00DFD0EF  e9 14 00 00 00                   jmp      0xdfd108
+00DFD0F4  bb 02 00 00 00                   mov      ebx, 2
+00DFD0F9  e9 0a 00 00 00                   jmp      0xdfd108
+00DFD0FE  bb 03 00 00 00                   mov      ebx, 3
+00DFD103  e9 00 00 00 00                   jmp      0xdfd108
+00DFD108  a1 e0 9c c7 00                   mov      eax, dword ptr [0xc79ce0]
+00DFD10D  85 c0                            test     eax, eax
+00DFD10F  0f 84 90 01 00 00                je       0xdfd2a5
+00DFD115  8b 80 d0 2e 00 00                mov      eax, dword ptr [eax + 0x2ed0]
+00DFD11B  85 c0                            test     eax, eax
+00DFD11D  0f 84 82 01 00 00                je       0xdfd2a5
+00DFD123  8b 90 c0 00 00 00                mov      edx, dword ptr [eax + 0xc0]
+00DFD129  85 d2                            test     edx, edx
+00DFD12B  0f 84 74 01 00 00                je       0xdfd2a5
+00DFD131  39 51 30                         cmp      dword ptr [ecx + 0x30], edx
+00DFD134  0f 85 6b 01 00 00                jne      0xdfd2a5
+00DFD13A  8b 90 c4 00 00 00                mov      edx, dword ptr [eax + 0xc4]
+00DFD140  39 51 34                         cmp      dword ptr [ecx + 0x34], edx
+00DFD143  0f 85 5c 01 00 00                jne      0xdfd2a5
+00DFD149  8b 81 d0 00 00 00                mov      eax, dword ptr [ecx + 0xd0]
+00DFD14F  85 c0                            test     eax, eax
+00DFD151  0f 84 4e 01 00 00                je       0xdfd2a5
+00DFD157  39 a8 f4 00 00 00                cmp      dword ptr [eax + 0xf4], ebp
+00DFD15D  0f 85 42 01 00 00                jne      0xdfd2a5
+00DFD163  8b b8 f8 00 00 00                mov      edi, dword ptr [eax + 0xf8]
+00DFD169  85 ff                            test     edi, edi
+00DFD16B  0f 84 34 01 00 00                je       0xdfd2a5
+00DFD171  81 fd 5b 5c 00 00                cmp      ebp, 0x5c5b
+00DFD177  0f 84 25 01 00 00                je       0xdfd2a2
+00DFD17D  81 fd 65 5c 00 00                cmp      ebp, 0x5c65
+00DFD183  0f 84 19 01 00 00                je       0xdfd2a2
+00DFD189  81 fd 64 66 00 00                cmp      ebp, 0x6664
+00DFD18F  0f 84 0d 01 00 00                je       0xdfd2a2
+00DFD195  81 fd 27 79 00 00                cmp      ebp, 0x7927
+00DFD19B  0f 84 01 01 00 00                je       0xdfd2a2
+00DFD1A1  81 fd ce 79 00 00                cmp      ebp, 0x79ce
+00DFD1A7  0f 84 f5 00 00 00                je       0xdfd2a2
+00DFD1AD  81 fd dd 79 00 00                cmp      ebp, 0x79dd
+00DFD1B3  0f 84 e9 00 00 00                je       0xdfd2a2
+00DFD1B9  8b 91 d0 0d 00 00                mov      edx, dword ptr [ecx + 0xdd0]
+00DFD1BF  83 fa ff                         cmp      edx, -1
+00DFD1C2  0f 84 14 00 00 00                je       0xdfd1dc
+00DFD1C8  83 fa 10                         cmp      edx, 0x10
+00DFD1CB  0f 87 d4 00 00 00                ja       0xdfd2a5
+00DFD1D1  8d b1 50 0c 00 00                lea      esi, [ecx + 0xc50]
+00DFD1D7  e9 0c 00 00 00                   jmp      0xdfd1e8
+00DFD1DC  8b 91 54 0c 00 00                mov      edx, dword ptr [ecx + 0xc54]
+00DFD1E2  8b b1 58 0c 00 00                mov      esi, dword ptr [ecx + 0xc58]
+00DFD1E8  85 f6                            test     esi, esi
+00DFD1EA  0f 84 b5 00 00 00                je       0xdfd2a5
+00DFD1F0  81 fa 00 01 00 00                cmp      edx, 0x100
+00DFD1F6  0f 87 a9 00 00 00                ja       0xdfd2a5
+00DFD1FC  85 d2                            test     edx, edx
+00DFD1FE  0f 84 a1 00 00 00                je       0xdfd2a5
+00DFD204  8b 46 08                         mov      eax, dword ptr [esi + 8]
+00DFD207  83 fb 00                         cmp      ebx, 0
+00DFD20A  0f 85 16 00 00 00                jne      0xdfd226
+00DFD210  3d 3c 17 01 00                   cmp      eax, 0x1173c
+00DFD215  0f 84 87 00 00 00                je       0xdfd2a2
+00DFD21B  3d 89 17 01 00                   cmp      eax, 0x11789
+00DFD220  0f 84 7c 00 00 00                je       0xdfd2a2
+00DFD226  83 fb 01                         cmp      ebx, 1
+00DFD229  0f 85 16 00 00 00                jne      0xdfd245
+00DFD22F  3d 3e 17 01 00                   cmp      eax, 0x1173e
+00DFD234  0f 84 68 00 00 00                je       0xdfd2a2
+00DFD23A  3d 86 17 01 00                   cmp      eax, 0x11786
+00DFD23F  0f 84 5d 00 00 00                je       0xdfd2a2
+00DFD245  83 fb 02                         cmp      ebx, 2
+00DFD248  0f 85 16 00 00 00                jne      0xdfd264
+00DFD24E  3d 43 17 01 00                   cmp      eax, 0x11743
+00DFD253  0f 84 49 00 00 00                je       0xdfd2a2
+00DFD259  3d 87 17 01 00                   cmp      eax, 0x11787
+00DFD25E  0f 84 3e 00 00 00                je       0xdfd2a2
+00DFD264  83 fb 03                         cmp      ebx, 3
+00DFD267  0f 85 2c 00 00 00                jne      0xdfd299
+00DFD26D  3d 3d 17 01 00                   cmp      eax, 0x1173d
+00DFD272  0f 84 2a 00 00 00                je       0xdfd2a2
+00DFD278  3d 44 17 01 00                   cmp      eax, 0x11744
+00DFD27D  0f 84 1f 00 00 00                je       0xdfd2a2
+00DFD283  3d 84 17 01 00                   cmp      eax, 0x11784
+00DFD288  0f 84 14 00 00 00                je       0xdfd2a2
+00DFD28E  3d 88 17 01 00                   cmp      eax, 0x11788
+00DFD293  0f 84 09 00 00 00                je       0xdfd2a2
+00DFD299  83 c6 18                         add      esi, 0x18
+00DFD29C  4a                               dec      edx
+00DFD29D  e9 5a ff ff ff                   jmp      0xdfd1fc
+00DFD2A2  89 f8                            mov      eax, edi
+00DFD2A4  c3                               ret      
+00DFD2A5  89 e8                            mov      eax, ebp
+00DFD2A7  c3                               ret      
+00DFD2A8  9c                               pushfd   
+00DFD2A9  60                               pushal   
+00DFD2AA  8b ce                            mov      ecx, esi
+00DFD2AC  8b d7                            mov      edx, edi
+00DFD2AE  e8 0f 00 00 00                   call     0xdfd2c2
+00DFD2B3  89 04 24                         mov      dword ptr [esp], eax
+00DFD2B6  61                               popal    
+00DFD2B7  9d                               popfd    
+00DFD2B8  a1 c8 34 ad 00                   mov      eax, dword ptr [0xad34c8]
+00DFD2BD  e9 b7 06 93 ff                   jmp      0x72d979
+00DFD2C2  51                               push     ecx
+00DFD2C3  e8 19 00 00 00                   call     0xdfd2e1
+00DFD2C8  39 e8                            cmp      eax, ebp
+00DFD2CA  0f 84 0f 00 00 00                je       0xdfd2df
+00DFD2D0  8b 0c 24                         mov      ecx, dword ptr [esp]
+00DFD2D3  8b 89 d0 00 00 00                mov      ecx, dword ptr [ecx + 0xd0]
+00DFD2D9  89 81 f4 00 00 00                mov      dword ptr [ecx + 0xf4], eax
+00DFD2DF  59                               pop      ecx
+00DFD2E0  c3                               ret      
+00DFD2E1  89 d5                            mov      ebp, edx
+00DFD2E3  81 fa 5b 5c 00 00                cmp      edx, 0x5c5b
+00DFD2E9  0f 84 41 00 00 00                je       0xdfd330
+00DFD2EF  81 fa 65 5c 00 00                cmp      edx, 0x5c65
+00DFD2F5  0f 84 35 00 00 00                je       0xdfd330
+00DFD2FB  81 fa 27 79 00 00                cmp      edx, 0x7927
+00DFD301  0f 84 33 00 00 00                je       0xdfd33a
+00DFD307  81 fa 64 66 00 00                cmp      edx, 0x6664
+00DFD30D  0f 84 31 00 00 00                je       0xdfd344
+00DFD313  81 fa ce 79 00 00                cmp      edx, 0x79ce
+00DFD319  0f 84 2f 00 00 00                je       0xdfd34e
+00DFD31F  81 fa dd 79 00 00                cmp      edx, 0x79dd
+00DFD325  0f 84 23 00 00 00                je       0xdfd34e
+00DFD32B  e9 c5 01 00 00                   jmp      0xdfd4f5
+00DFD330  bb 00 00 00 00                   mov      ebx, 0
+00DFD335  e9 1e 00 00 00                   jmp      0xdfd358
+00DFD33A  bb 01 00 00 00                   mov      ebx, 1
+00DFD33F  e9 14 00 00 00                   jmp      0xdfd358
+00DFD344  bb 02 00 00 00                   mov      ebx, 2
+00DFD349  e9 0a 00 00 00                   jmp      0xdfd358
+00DFD34E  bb 03 00 00 00                   mov      ebx, 3
+00DFD353  e9 00 00 00 00                   jmp      0xdfd358
+00DFD358  a1 e0 9c c7 00                   mov      eax, dword ptr [0xc79ce0]
+00DFD35D  85 c0                            test     eax, eax
+00DFD35F  0f 84 90 01 00 00                je       0xdfd4f5
+00DFD365  8b 80 d0 2e 00 00                mov      eax, dword ptr [eax + 0x2ed0]
+00DFD36B  85 c0                            test     eax, eax
+00DFD36D  0f 84 82 01 00 00                je       0xdfd4f5
+00DFD373  8b 90 c0 00 00 00                mov      edx, dword ptr [eax + 0xc0]
+00DFD379  85 d2                            test     edx, edx
+00DFD37B  0f 84 74 01 00 00                je       0xdfd4f5
+00DFD381  39 51 30                         cmp      dword ptr [ecx + 0x30], edx
+00DFD384  0f 85 6b 01 00 00                jne      0xdfd4f5
+00DFD38A  8b 90 c4 00 00 00                mov      edx, dword ptr [eax + 0xc4]
+00DFD390  39 51 34                         cmp      dword ptr [ecx + 0x34], edx
+00DFD393  0f 85 5c 01 00 00                jne      0xdfd4f5
+00DFD399  8b 81 d0 00 00 00                mov      eax, dword ptr [ecx + 0xd0]
+00DFD39F  85 c0                            test     eax, eax
+00DFD3A1  0f 84 4e 01 00 00                je       0xdfd4f5
+00DFD3A7  39 a8 f4 00 00 00                cmp      dword ptr [eax + 0xf4], ebp
+00DFD3AD  0f 85 42 01 00 00                jne      0xdfd4f5
+00DFD3B3  8b b8 f8 00 00 00                mov      edi, dword ptr [eax + 0xf8]
+00DFD3B9  85 ff                            test     edi, edi
+00DFD3BB  0f 84 34 01 00 00                je       0xdfd4f5
+00DFD3C1  81 fd 5b 5c 00 00                cmp      ebp, 0x5c5b
+00DFD3C7  0f 84 25 01 00 00                je       0xdfd4f2
+00DFD3CD  81 fd 65 5c 00 00                cmp      ebp, 0x5c65
+00DFD3D3  0f 84 19 01 00 00                je       0xdfd4f2
+00DFD3D9  81 fd 64 66 00 00                cmp      ebp, 0x6664
+00DFD3DF  0f 84 0d 01 00 00                je       0xdfd4f2
+00DFD3E5  81 fd 27 79 00 00                cmp      ebp, 0x7927
+00DFD3EB  0f 84 01 01 00 00                je       0xdfd4f2
+00DFD3F1  81 fd ce 79 00 00                cmp      ebp, 0x79ce
+00DFD3F7  0f 84 f5 00 00 00                je       0xdfd4f2
+00DFD3FD  81 fd dd 79 00 00                cmp      ebp, 0x79dd
+00DFD403  0f 84 e9 00 00 00                je       0xdfd4f2
+00DFD409  8b 91 d0 0d 00 00                mov      edx, dword ptr [ecx + 0xdd0]
+00DFD40F  83 fa ff                         cmp      edx, -1
+00DFD412  0f 84 14 00 00 00                je       0xdfd42c
+00DFD418  83 fa 10                         cmp      edx, 0x10
+00DFD41B  0f 87 d4 00 00 00                ja       0xdfd4f5
+00DFD421  8d b1 50 0c 00 00                lea      esi, [ecx + 0xc50]
+00DFD427  e9 0c 00 00 00                   jmp      0xdfd438
+00DFD42C  8b 91 54 0c 00 00                mov      edx, dword ptr [ecx + 0xc54]
+00DFD432  8b b1 58 0c 00 00                mov      esi, dword ptr [ecx + 0xc58]
+00DFD438  85 f6                            test     esi, esi
+00DFD43A  0f 84 b5 00 00 00                je       0xdfd4f5
+00DFD440  81 fa 00 01 00 00                cmp      edx, 0x100
+00DFD446  0f 87 a9 00 00 00                ja       0xdfd4f5
+00DFD44C  85 d2                            test     edx, edx
+00DFD44E  0f 84 a1 00 00 00                je       0xdfd4f5
+00DFD454  8b 46 08                         mov      eax, dword ptr [esi + 8]
+00DFD457  83 fb 00                         cmp      ebx, 0
+00DFD45A  0f 85 16 00 00 00                jne      0xdfd476
+00DFD460  3d 3c 17 01 00                   cmp      eax, 0x1173c
+00DFD465  0f 84 87 00 00 00                je       0xdfd4f2
+00DFD46B  3d 89 17 01 00                   cmp      eax, 0x11789
+00DFD470  0f 84 7c 00 00 00                je       0xdfd4f2
+00DFD476  83 fb 01                         cmp      ebx, 1
+00DFD479  0f 85 16 00 00 00                jne      0xdfd495
+00DFD47F  3d 3e 17 01 00                   cmp      eax, 0x1173e
+00DFD484  0f 84 68 00 00 00                je       0xdfd4f2
+00DFD48A  3d 86 17 01 00                   cmp      eax, 0x11786
+00DFD48F  0f 84 5d 00 00 00                je       0xdfd4f2
+00DFD495  83 fb 02                         cmp      ebx, 2
+00DFD498  0f 85 16 00 00 00                jne      0xdfd4b4
+00DFD49E  3d 43 17 01 00                   cmp      eax, 0x11743
+00DFD4A3  0f 84 49 00 00 00                je       0xdfd4f2
+00DFD4A9  3d 87 17 01 00                   cmp      eax, 0x11787
+00DFD4AE  0f 84 3e 00 00 00                je       0xdfd4f2
+00DFD4B4  83 fb 03                         cmp      ebx, 3
+00DFD4B7  0f 85 2c 00 00 00                jne      0xdfd4e9
+00DFD4BD  3d 3d 17 01 00                   cmp      eax, 0x1173d
+00DFD4C2  0f 84 2a 00 00 00                je       0xdfd4f2
+00DFD4C8  3d 44 17 01 00                   cmp      eax, 0x11744
+00DFD4CD  0f 84 1f 00 00 00                je       0xdfd4f2
+00DFD4D3  3d 84 17 01 00                   cmp      eax, 0x11784
+00DFD4D8  0f 84 14 00 00 00                je       0xdfd4f2
+00DFD4DE  3d 88 17 01 00                   cmp      eax, 0x11788
+00DFD4E3  0f 84 09 00 00 00                je       0xdfd4f2
+00DFD4E9  83 c6 18                         add      esi, 0x18
+00DFD4EC  4a                               dec      edx
+00DFD4ED  e9 5a ff ff ff                   jmp      0xdfd44c
+00DFD4F2  89 f8                            mov      eax, edi
+00DFD4F4  c3                               ret      
+00DFD4F5  89 e8                            mov      eax, ebp
+00DFD4F7  c3                               ret      
