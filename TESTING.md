@@ -16,3 +16,7 @@ Notes or problems:
 ```
 
 If something fails, describe the steps that caused it. Screenshots are optional. Review attachments for personal details before posting publicly.
+
+## Additional transformation checks
+
+Druid forms and overlapping transformations remain unverified. If applicable, test a proc while already shapeshifted, shapeshifting during the buff, and a separate disguise overlapping the buff. Check appearance and animations after each effect expires, and after gear changes or relogging. Report the order of effects and any incorrect appearance. Other effects sharing the six targeted display IDs may also be suppressed.

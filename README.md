@@ -49,14 +49,15 @@ Download and extract the [Windows patcher package](https://github.com/Cacato/dbw
 4. The patcher creates `Wow (DBW Fix).exe` beside the original.
 5. Launch the new copy from your game folder, beside `DivxDecoder.dll`.
 
-The patcher accepts only the matching original hash listed below, checks the expected instructions, and verifies the generated release hash before writing. If the output already exists, move or rename that copy first.
+The patcher accepts only the matching original hash listed below, checks the expected instructions, and verifies the generated release hash in memory and again after writing a temporary file, then renames that file to the final output. If the output already exists, move or rename that copy first.
 
 ## Exactly which files change?
 
 | File or location | Action |
 | --- | --- |
 | Original executable selected by you | Read to build the fixed copy |
-| `Wow (DBW Fix).exe` beside that original | Created as the one output file |
+| `.dbw-<random>.tmp` beside the output | Written and verified, then renamed; cleaned up on handled failures |
+| `Wow (DBW Fix).exe` beside that original | Published only after verification, without replacing existing files |
 
 The modifications are contained in the generated executable. Two instruction sites redirect to the added patch code. The executable headers are updated to describe that code, and the original signature directory is cleared because the original signature does not cover the modified copy.
 
@@ -64,7 +65,7 @@ See [CHANGES.md](CHANGES.md) for exact offsets, bytes, and the complete file-cha
 
 ## Verify the files
 
-The patcher supports the two original executables identified below, regardless of their filenames.
+The patcher supports two base executables and two exact 4 GB / Large Address Aware (LAA) variants of the standard executable, regardless of their filenames. These variants were verified by constructing them from the supported standard original. This does not establish compatibility with every 4 GB tool, HD client, or other modified executable; unmatched hashes remain rejected. In-game testing of these new LAA variants is still pending.
 
 | File | SHA256 |
 | --- | --- |
@@ -72,6 +73,10 @@ The patcher supports the two original executables identified below, regardless o
 | Fixed executable from modified original | `906e2e25e413116d73f365fbd93be49c0e6d0b44342ff55c661907da8627f523` |
 | Clean-client original Wow.exe | `aa63a5750d60ef16746c686b3d5e26876d98953eab08b1c026cd0faf78e88cb8` |
 | Fixed executable from clean original | `b6d715e35c72bbd26cfdb88ba1a1d1dff1e2fc1bac6bf14baa3762c42dc3fe88` |
+
+| Standard original with only LAA enabled | `8d1067f7d3391248fee97fd7426fd86ac4ef9b88c06bce1b3e65f85c75112ede` |
+| Standard original with LAA enabled and checksum cleared | `6ca62aac2a386bdb2b6ccfe75444af65665d30600edc0b54efea831cc452199a` |
+| Fixed executable from either standard LAA variant | `59c086a0ed22cdc51ff0e56504a6bfb4cf385989769bb0649202d4c7e1afa89a` |
 
 Check the generated file in PowerShell.
 
@@ -102,6 +107,10 @@ This creates `DbwPatcher.exe` in the repository folder. The patcher can also be 
 .\DbwPatcher.exe "C:\Games\World of Warcraft\Wow (Allow Interface Edits x64).exe" "C:\Games\World of Warcraft\Wow (DBW Fix).exe"
 ```
 
+## Automated regression checks
+
+Run `.\tests\run.ps1` on Windows. See [tests/README.md](tests/README.md) for coverage and optional original-file checks. The suite exercises the actual x86 helpers against synthetic character data; it does not replace in-game testing.
+
 ## Report a test
 
 Share a [test report in Issues](https://github.com/Cacato/dbw-visual-fix/issues/new?template=test-report.md), post in [Discussions](https://github.com/Cacato/dbw-visual-fix/discussions), or message **@Matcha on Discord**. Copy and paste the form in [TESTING.md](TESTING.md). Include your race, gender, and the proc names you tested.
@@ -116,4 +125,4 @@ I tested the fix in a separate clean 3.3.5a client without addons copied from th
 
 ## Project status
 
-The patcher supports the tested standard 3.3.5a executable and one tested modified executable. Other modified executables require compatibility verification. Clean-client testing has confirmed the main proc, equipment-change, and relog paths. The Windows patcher reproduced the tested release byte for byte. Race and gender coverage will be updated as testing continues.
+The patcher supports the tested standard 3.3.5a executable and one tested modified executable. The two documented standard LAA variants are also accepted and preserve the LAA flag. Other modified executables require compatibility verification. Clean-client testing has confirmed the main proc, equipment-change, and relog paths. The Windows patcher reproduced the tested release byte for byte. Race and gender coverage will be updated as testing continues.

@@ -125,6 +125,10 @@ internal static class DbwPatcher
                 case "AA63A5750D60EF16746C686B3D5E26876D98953EAB08B1C026CD0FAF78E88CB8":
                     expectedOutputHash = "B6D715E35C72BBD26CFDB88BA1A1D1DFF1E2FC1BAC6BF14BAA3762C42DC3FE88";
                     break;
+                case "8D1067F7D3391248FEE97FD7426FD86AC4EF9B88C06BCE1B3E65F85C75112EDE":
+                case "6CA62AAC2A386BDB2B6CCFE75444AF65665D30600EDC0B54EFEA831CC452199A":
+                    expectedOutputHash = "59C086A0ED22CDC51FF0E56504A6BFB4CF385989769BB0649202D4C7E1AFA89A";
+                    break;
                 default:
                     throw new InvalidDataException("This executable is unsupported. Select an original matching a SHA256 in README.md.");
             }
@@ -172,8 +176,42 @@ internal static class DbwPatcher
             if (hash != expectedOutputHash)
                 throw new InvalidDataException("Output differs from the verified release. No file was written.");
         }
-        using (FileStream file = new FileStream(output, FileMode.CreateNew, FileAccess.Write))
-            file.Write(patched, 0, patched.Length);
+        WriteOutput(output, patched, expectedOutputHash);
+    }
+
+    private static void WriteOutput(string output, byte[] contents, string expectedHash)
+    {
+        string destination = Path.GetFullPath(output);
+        if (File.Exists(destination))
+            throw new IOException("The output already exists. Move or rename it before trying again.");
+
+        string temporary = Path.Combine(Path.GetDirectoryName(destination),
+            ".dbw-" + Guid.NewGuid().ToString("N") + ".tmp");
+        bool created = false;
+        try
+        {
+            using (FileStream file = new FileStream(temporary, FileMode.CreateNew,
+                FileAccess.ReadWrite, FileShare.None))
+            {
+                created = true;
+                file.Write(contents, 0, contents.Length);
+                file.Flush(true);
+                file.Position = 0;
+                using (SHA256 sha = SHA256.Create())
+                {
+                    string actual = BitConverter.ToString(sha.ComputeHash(file)).Replace("-", "");
+                    if (!String.Equals(actual, expectedHash, StringComparison.OrdinalIgnoreCase))
+                        throw new InvalidDataException("The written file failed verification.");
+                }
+            }
+            // Same-directory rename publishes the completed file and refuses an existing destination.
+            File.Move(temporary, destination);
+        }
+        finally
+        {
+            if (created && File.Exists(temporary))
+                File.Delete(temporary);
+        }
     }
 
     private static void InstallJump(byte[] bytes, int text, uint address, uint destination, byte[] expected)

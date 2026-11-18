@@ -2,13 +2,13 @@
 
 ## Files affected when running DbwPatcher.exe
 
-The patcher reads the selected original executable and creates one output, normally `Wow (DBW Fix).exe` in the same folder. Existing output files cause an error. The original executable is opened for reading only.
+The patcher reads the selected original executable and creates one output, normally `Wow (DBW Fix).exe` in the same folder. Existing output files cause an error. The original executable is opened for reading only. The output is first written to a uniquely named `.dbw-<random>.tmp` in the destination folder, flushed to disk and SHA256-verified, then renamed without overwriting. Handled failures remove the temporary file. Abrupt process termination or power loss can leave a temporary file, but the final executable is not published until verification succeeds.
 
 Game archives, DLLs, addons, configuration, saved variables, cache, shortcuts, registry, and server files receive no writes from the patcher. The patcher creates no logs, installs no service, accesses no network, and launches no game process. Normal WoW activity after launching the generated client can update its usual settings, cache, and logs.
 
 ## Code changes in the generated copy
 
-The two supported original executables have matching instructions at both hook sites and matching section layouts. All offsets below apply to both originals. Virtual addresses assume image base `0x00400000`.
+The supported originals and their documented LAA variants have matching instructions at both hook sites and matching section layouts. All offsets below apply to both originals. Virtual addresses assume image base `0x00400000`.
 
 | Purpose | File offset | Virtual address | Original bytes | Patched bytes |
 | --- | --- | --- | --- | --- |
@@ -30,3 +30,7 @@ At runtime the fix writes your local character’s current display field to the 
 - Final size is 7,706,112 bytes, compared with 7,704,216 bytes for the original.
 
 SHA256 hashes for the input, output, patcher, and source files are documented in README.md and SHA256SUMS.txt. A matching hash establishes file identity. Source review is how you assess the behavior of those bytes.
+
+## Patcher hardening
+
+Exact SHA256 allowlisting includes the two documented standard LAA variants. The generated copy retains the input LAA flag. The injected gameplay payload is unchanged. Regression tests cover output verification failures, rename failures, existing-file protection, malformed inputs, and native x86 display helpers.
